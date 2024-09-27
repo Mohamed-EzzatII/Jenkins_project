@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name:  db
+  namespace: webapp
+  labels:
+    app:  db-dep
+spec:
+  selector:
+    matchLabels:
+      app: db
+  replicas: 1
+  template: 
+    metadata:
+      name: "db"
+      namespace: webapp
+      labels:
+        app: "db"
+    spec:
+      volumes:
+        - name: db-data
+          persistentVolumeClaim:
+            claimName: db-pvc
+      containers:
+        - name: "db-pod"
+          image: "mysql:latest"
+          resources:
+            limits:
+              cpu: 200m
+              memory: 500Mi
+            requests:
+              cpu: 100m
+              memory: 200Mi
+          ports:
+          - containerPort:  3306
+            protocol: TCP
+          env:
+              - name: MYSQL_ROOT_PASSWORD
+                value: "0244"
+              - name: MYSQL_DATABASE
+                value: "example"
+          volumeMounts:
+              - name: db-data
+                mountPath: "/var/lib/mysql"
+            
