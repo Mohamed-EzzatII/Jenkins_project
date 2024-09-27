@@ -1,4 +1,4 @@
-pipline{
+pipeline{
     agent any
     stages{
         
@@ -16,13 +16,15 @@ pipline{
 
         stage("Create Namespace"){
             steps{
-                sh "cd Jenkins_project"
-                sh "kubectl create namespace devops-tools"
-                sh "kubectl apply -f serviceAccount.yaml"
-                sh "kubectl apply -f volume.yaml"
-                sh "kubectl apply -f deployment.yaml"
-                sh "kubectl get deployments -n devops-tools"
-                sh "kubectl apply -f service.yaml"
+                sh "cd /var/lib/jenkins/workspace/jenkins_project/Jenkins_project/jenkins_yaml"
+                sh "sudo kubectl create namespace devops-tools"
+                sh "sudo kubectl apply -f serviceAccount.yaml"
+                sh "sudo kubectl apply -f volume.yaml"
+                sh "sudo kubectl apply -f deployment.yaml"
+                sh "sudo kubectl get deployments -n devops-tools"
+                sh "sudo kubectl apply -f service.yaml"
+                sh "cd .."
+                sh "./start.sh"
             }
         }
 
